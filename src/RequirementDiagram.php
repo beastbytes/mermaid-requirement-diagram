@@ -11,8 +11,9 @@ namespace BeastBytes\Mermaid\RequirementDiagram;
 use BeastBytes\Mermaid\Mermaid;
 use BeastBytes\Mermaid\MermaidInterface;
 use BeastBytes\Mermaid\RenderItemsTrait;
+use Stringable;
 
-final class RequirementDiagram implements MermaidInterface
+final class RequirementDiagram implements MermaidInterface, Stringable
 {
     use RenderItemsTrait;
 
