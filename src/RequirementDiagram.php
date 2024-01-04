@@ -10,9 +10,12 @@ namespace BeastBytes\Mermaid\RequirementDiagram;
 
 use BeastBytes\Mermaid\Mermaid;
 use BeastBytes\Mermaid\MermaidInterface;
+use BeastBytes\Mermaid\RenderItemsTrait;
 
 final class RequirementDiagram implements MermaidInterface
 {
+    use RenderItemsTrait;
+
     private const TYPE = 'requirementDiagram';
 
     /** @var Element[] $elements */
@@ -74,18 +77,9 @@ final class RequirementDiagram implements MermaidInterface
         $output = [];
 
         $output[] = self::TYPE;
-
-        foreach ($this->requirements as $requirement) {
-            $output[] = $requirement->render(Mermaid::INDENTATION);
-        }
-
-        foreach ($this->elements as $element) {
-            $output[] = $element->render(Mermaid::INDENTATION);
-        }
-
-        foreach ($this->relationships as $relationship) {
-            $output[] = $relationship->render();
-        }
+        $output[] = $this->renderItems($this->requirements, '');
+        $output[] = $this->renderItems($this->elements, '');
+        $output[] = $this->renderItems($this->relationships, '');
 
         return Mermaid::render($output);
     }

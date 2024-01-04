@@ -4,7 +4,7 @@ use BeastBytes\Mermaid\Mermaid;
 use BeastBytes\Mermaid\RequirementDiagram\Element;
 
 test('Element', function () {
-    expect((new Element('element_0', 'element_0_type'))->render(Mermaid::INDENTATION))
+    expect((new Element('element_0', 'element_0_type'))->render(''))
         ->toBe("element element_0 {\n"
             . Mermaid::INDENTATION . "type: element_0_type\n"
             . '}'
@@ -14,7 +14,7 @@ test('Element', function () {
 
 test('Element with doc ref', function () {
     expect((new Element('element_0', 'element_0_type', 'element_0_docref'))
-        ->render(Mermaid::INDENTATION)
+        ->render('')
     )
         ->toBe("element element_0 {\n"
             . Mermaid::INDENTATION . "type: element_0_type\n"

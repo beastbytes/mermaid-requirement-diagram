@@ -10,8 +10,6 @@ namespace BeastBytes\Mermaid\RequirementDiagram;
 
 final class Relationship
 {
-    private const RELATIONSHIP = '%s - %s -> %s';
-
     public function __construct(
         private readonly Element|Requirement $source,
         private readonly Element|Requirement $destination,
@@ -21,13 +19,14 @@ final class Relationship
     }
 
     /** @internal  */
-    public function render(): string
+    public function render(string $indentation): string
     {
-        return sprintf(
-            self::RELATIONSHIP,
-            $this->source->getName(),
-            $this->type->value,
-            $this->destination->getName()
-        );
+        return $indentation
+            . $this->source->getName()
+            . ' - '
+            . $this->type->value
+            . ' -> '
+            . $this->destination->getName()
+        ;
     }
 }

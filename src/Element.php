@@ -8,14 +8,11 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\RequirementDiagram;
 
+use BeastBytes\Mermaid\Mermaid;
 use phpDocumentor\Reflection\Types\Self_;
 
 final class Element
 {
-    private const DOC_REF = "\n%sdocRef: %s";
-    private const ELEMENT = "element %s {\n%s%s\n}";
-    private const TYPE = "%stype: %s";
-
     public function __construct(
         private readonly string $name,
         private readonly string $type,
@@ -32,11 +29,21 @@ final class Element
     /** @internal  */
     public function render(string $indentation): string
     {
-        return sprintf(
-            self::ELEMENT,
-            $this->name,
-            sprintf(self::TYPE, $indentation, $this->type),
-            $this->docRef === '' ? '' : sprintf(self::DOC_REF, $indentation, $this->docRef),
+        $body = ['type: ' . $this->type];
+
+        if ($this->docRef !== '') {
+            $body[] = 'docRef: ' . $this->docRef;
+        }
+
+        $body = Mermaid::INDENTATION . implode("\n" . $indentation . Mermaid::INDENTATION, $body);
+
+        return $indentation . implode(
+            "\n" . $indentation,
+            [
+                'element ' . $this->name . ' {',
+                $body,
+                '}'
+            ]
         );
     }
 }

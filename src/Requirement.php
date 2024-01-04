@@ -8,10 +8,10 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\RequirementDiagram;
 
+use BeastBytes\Mermaid\Mermaid;
+
 final class Requirement
 {
-    private const REQUIREMENT = "%s %s {\n%sid: %s\n%stext: %s\n%srisk: %s\n%sverifyMethod: %s\n}";
-
     public function __construct(
         private readonly Type $type,
         private readonly string $name,
@@ -31,18 +31,23 @@ final class Requirement
     /** @internal  */
     public function render(string $indentation): string
     {
-        return sprintf(
-            self::REQUIREMENT,
-            $this->type->value,
-            $this->name,
-            $indentation,
-            $this->id,
-            $indentation,
-            $this->text,
-            $indentation,
-            $this->risk->value,
-            $indentation,
-            $this->verificationMethod->value
+        $body = Mermaid::INDENTATION . implode(
+            "\n" . $indentation . Mermaid::INDENTATION,
+            [
+                'id: ' . $this->id,
+                'text: ' . $this->text,
+                'risk: ' . $this->risk->value,
+                'verifyMethod: ' . $this->verificationMethod->value
+            ]
+        );
+
+        return $indentation . implode(
+            "\n" . $indentation,
+            [
+                $this->type->value . ' ' . $this->name . ' {',
+                $body,
+                '}'
+            ]
         );
     }
 }

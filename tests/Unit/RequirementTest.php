@@ -8,7 +8,7 @@ use BeastBytes\Mermaid\RequirementDiagram\VerificationMethod;
 
 test('Requirement', function (Risk $risk, Type $type, VerificationMethod $verificationMethod) {
     expect((new Requirement($type, 'requirement_0', 'r0', 'Some text', $risk, $verificationMethod))
-        ->render(Mermaid::INDENTATION)
+        ->render('')
     )
         ->toBe($type->value . " requirement_0 {\n"
             . Mermaid::INDENTATION . "id: r0\n"
