@@ -31,7 +31,7 @@ final class Requirement
     /** @internal  */
     public function render(string $indentation): string
     {
-        $body = Mermaid::INDENTATION . implode(
+        $body = $indentation . Mermaid::INDENTATION . implode(
             "\n" . $indentation . Mermaid::INDENTATION,
             [
                 'id: ' . $this->id,
@@ -41,12 +41,12 @@ final class Requirement
             ]
         );
 
-        return $indentation . implode(
-            "\n" . $indentation,
+        return implode(
+            "\n",
             [
-                $this->type->value . ' ' . $this->name . ' {',
+                $indentation . $this->type->value . ' ' . $this->name . ' {',
                 $body,
-                '}'
+                $indentation . '}'
             ]
         );
     }
