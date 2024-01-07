@@ -13,7 +13,7 @@ test('Relationship', function (
     Element|Requirement $destination,
     RelationshipType $type
 ) {
-    expect((new Relationship($source, $destination, $type))->render())
+    expect((new Relationship($source, $destination, $type))->render(''))
         ->toBe($source->getName() . ' - ' . $type->value . ' -> ' . $destination->getName())
     ;
 })
