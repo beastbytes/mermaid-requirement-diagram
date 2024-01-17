@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\RequirementDiagram;
 
+use BeastBytes\Mermaid\CommentTrait;
 use BeastBytes\Mermaid\Mermaid;
 use BeastBytes\Mermaid\MermaidInterface;
 use BeastBytes\Mermaid\RenderItemsTrait;
@@ -15,6 +16,7 @@ use Stringable;
 
 final class RequirementDiagram implements MermaidInterface, Stringable
 {
+    use CommentTrait;
     use RenderItemsTrait;
 
     private const TYPE = 'requirementDiagram';
@@ -77,10 +79,11 @@ final class RequirementDiagram implements MermaidInterface, Stringable
     {
         $output = [];
 
+        $this->renderComment('', $output);
         $output[] = self::TYPE;
-        $output[] = $this->renderItems($this->requirements, '');
-        $output[] = $this->renderItems($this->elements, '');
-        $output[] = $this->renderItems($this->relationships, '');
+        $this->renderItems($this->requirements, '',$output);
+        $this->renderItems($this->elements, '', $output);
+        $this->renderItems($this->relationships, '', $output);
 
         return Mermaid::render($output);
     }

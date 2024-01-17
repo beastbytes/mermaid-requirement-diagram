@@ -8,11 +8,13 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\RequirementDiagram;
 
+use BeastBytes\Mermaid\CommentTrait;
 use BeastBytes\Mermaid\Mermaid;
-use phpDocumentor\Reflection\Types\Self_;
 
 final class Element
 {
+    use CommentTrait;
+
     public function __construct(
         private readonly string $name,
         private readonly string $type,
@@ -29,21 +31,16 @@ final class Element
     /** @internal  */
     public function render(string $indentation): string
     {
-        $body = ['type: ' . $this->type];
+        $output = [];
 
+        $this->renderComment($indentation, $output);
+        $output[] = $indentation . 'element ' . $this->name . ' {';
+        $output[] = $indentation . Mermaid::INDENTATION . 'type: ' . $this->type;
         if ($this->docRef !== '') {
-            $body[] = 'docRef: ' . $this->docRef;
+            $output[] = $indentation . Mermaid::INDENTATION . 'docRef: ' . $this->docRef;
         }
+        $output[] = $indentation . '}';
 
-        $body = Mermaid::INDENTATION . implode("\n" . $indentation . Mermaid::INDENTATION, $body);
-
-        return $indentation . implode(
-            "\n" . $indentation,
-            [
-                'element ' . $this->name . ' {',
-                $body,
-                '}'
-            ]
-        );
+        return implode("\n", $output);
     }
 }

@@ -6,15 +6,19 @@ use BeastBytes\Mermaid\RequirementDiagram\Risk;
 use BeastBytes\Mermaid\RequirementDiagram\Type;
 use BeastBytes\Mermaid\RequirementDiagram\VerificationMethod;
 
+defined('COMMENT') or define('COMMENT', 'comment');
+
 test('Requirement', function (Risk $risk, Type $type, VerificationMethod $verificationMethod) {
     expect((new Requirement($type, 'requirement_0', 'r0', 'Some text', $risk, $verificationMethod))
+        ->withComment(COMMENT)
         ->render('')
     )
-        ->toBe($type->value . " requirement_0 {\n"
-            . Mermaid::INDENTATION . "id: r0\n"
-            . Mermaid::INDENTATION . "text: Some text\n"
-            . Mermaid::INDENTATION . 'risk: ' . $risk->value . "\n"
-            . Mermaid::INDENTATION . 'verifyMethod: ' . $verificationMethod->value . "\n"
+        ->toBe('%% ' . COMMENT . "\n"
+            . $type->value . " requirement_0 {\n"
+            . "  id: r0\n"
+            . "  text: Some text\n"
+            . '  risk: ' . $risk->value . "\n"
+            . '  verifyMethod: ' . $verificationMethod->value . "\n"
             . '}'
         )
     ;

@@ -9,6 +9,8 @@ use BeastBytes\Mermaid\RequirementDiagram\Risk;
 use BeastBytes\Mermaid\RequirementDiagram\Type;
 use BeastBytes\Mermaid\RequirementDiagram\VerificationMethod;
 
+defined('COMMENT') or define('COMMENT', 'comment');
+
 test('Requirement Diagram', function () {
     $testReq1 = new Requirement(
         Type::Requirement,
@@ -72,6 +74,7 @@ test('Requirement Diagram', function () {
     $relationship8 = new Relationship($testEntity2, $testReq1, RelationshipType::Copies);
 
     expect((new RequirementDiagram())
+        ->withComment(COMMENT)
         ->withRequirement($testReq1, $testReq2, $testReq3, $testReq4)
         ->withElement($testEntity, $testEntity2)
         ->withRelationship($relationship1, $relationship2, $relationship3, $relationship4)
@@ -81,6 +84,7 @@ test('Requirement Diagram', function () {
         ->render()
     )
         ->toBe("<pre class=\"mermaid\">\n"
+            . '%% ' . COMMENT . "\n"
             . "requirementDiagram\n"
             . "  requirement test_req1 {\n"
             . "    id: 1\n"
