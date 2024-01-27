@@ -75,7 +75,7 @@ final class RequirementDiagram implements MermaidInterface, Stringable
         return $new;
     }
 
-    public function render(): string
+    public function render(array $attributes = []): string
     {
         $output = [];
 
@@ -85,6 +85,6 @@ final class RequirementDiagram implements MermaidInterface, Stringable
         $this->renderItems($this->elements, '', $output);
         $this->renderItems($this->relationships, '', $output);
 
-        return Mermaid::render($output);
+        return Mermaid::render($output, $attributes);
     }
 }
