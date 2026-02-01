@@ -1,22 +1,6 @@
 # Mermaid Requirement Diagram
-PHP for [Mermaid.js](https://mermaid.js.org/) Mermaid requirement diagrams.
+PHP for the [Mermaid.js](https://mermaid.js.org/) diagramming and charting tool [requirement diagram](https://mermaid.js.org/syntax/requirementDiagram.html).
 
 For license information see the [LICENSE](LICENSE.md) file.
 
-## Installation
-
-The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
-
-Either run
-
-```
-php composer.phar require --prefer-dist beastbytes/mermaid-requirement-diagram
-```
-
-or add
-
-```json
-"beastbytes/mermaid-requirement-diagram": "*"
-```
-
-to the require section of your composer.json.````
+Documentation is at https://beastbytes.github.io/mermaid-requirement-diagram
