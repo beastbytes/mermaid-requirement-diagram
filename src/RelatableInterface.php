@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\RequirementDiagram;
 
-enum Risk
+interface RelatableInterface
 {
-    case high;
-    case low;
-    case medium;
+    public function getName(): string;
 }

@@ -6,9 +6,11 @@ defined('COMMENT') or define('COMMENT', 'comment');
 
 test('Element', function () {
     expect((new Element('element_0', 'element_0_type'))->render(''))
-        ->toBe("element element_0 {\n"
-            . "  type: element_0_type\n"
-            . '}'
+        ->toBe(<<<EXPECTED
+element "element_0" {
+  type: "element_0_type"
+}
+EXPECTED
         )
     ;
 });
@@ -17,10 +19,12 @@ test('Element with doc ref', function () {
     expect((new Element('element_0', 'element_0_type', 'element_0_docref'))
                ->render('')
     )
-        ->toBe("element element_0 {\n"
-               . "  type: element_0_type\n"
-               . "  docRef: element_0_docref\n"
-               . '}'
+        ->toBe(<<<EXPECTED
+element "element_0" {
+  type: "element_0_type"
+  docRef: "element_0_docref"
+}
+EXPECTED
         )
     ;
 });
@@ -30,11 +34,13 @@ test('Element with comment', function () {
         ->withComment(COMMENT)
         ->render('')
     )
-        ->toBe('%% ' . COMMENT . "\n"
-            . "element element_0 {\n"
-            . "  type: element_0_type\n"
-            . "  docRef: element_0_docref\n"
-            . '}'
+        ->toBe(<<<EXPECTED
+%% comment
+element "element_0" {
+  type: "element_0_type"
+  docRef: "element_0_docref"
+}
+EXPECTED
         )
     ;
 });

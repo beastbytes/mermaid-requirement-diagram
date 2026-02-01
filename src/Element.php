@@ -1,8 +1,4 @@
 <?php
-/**
- * @copyright Copyright © 2023 BeastBytes - All rights reserved
- * @license BSD 3-Clause
- */
 
 declare(strict_types=1);
 
@@ -11,14 +7,19 @@ namespace BeastBytes\Mermaid\RequirementDiagram;
 use BeastBytes\Mermaid\CommentTrait;
 use BeastBytes\Mermaid\Mermaid;
 
-final class Element
+final class Element implements RelatableInterface
 {
     use CommentTrait;
+
+    private const string CLOSE = '}';
+    private const string DOC_REF = 'docRef: "%s"';
+    private const string ELEMENT = 'element "%s" {';
+    private const string TYPE = 'type: "%s"';
 
     public function __construct(
         private readonly string $name,
         private readonly string $type,
-        private readonly string $docRef = ''
+        private readonly ?string $docRef = null
     )
     {
     }
@@ -33,14 +34,15 @@ final class Element
     {
         $output = [];
 
-        $this->renderComment($indentation, $output);
-        $output[] = $indentation . 'element ' . $this->name . ' {';
-        $output[] = $indentation . Mermaid::INDENTATION . 'type: ' . $this->type;
-        if ($this->docRef !== '') {
-            $output[] = $indentation . Mermaid::INDENTATION . 'docRef: ' . $this->docRef;
-        }
-        $output[] = $indentation . '}';
+        $output[] = $this->renderComment($indentation);
+        $output[] = $indentation . sprintf(self::ELEMENT, $this->name);
+        $output[] = $indentation . Mermaid::INDENTATION . sprintf(self::TYPE, $this->type);
+        $output[] = (is_string($this->docRef)
+            ? $indentation . Mermaid::INDENTATION . sprintf(self::DOC_REF, $this->docRef)
+            : ''
+        );
+        $output[] = $indentation . self::CLOSE;
 
-        return implode("\n", $output);
+        return implode("\n", array_filter($output, fn($v) => !empty($v)));
     }
 }

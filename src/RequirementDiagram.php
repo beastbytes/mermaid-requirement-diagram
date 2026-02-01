@@ -1,25 +1,19 @@
 <?php
-/**
- * @copyright Copyright © 2023 BeastBytes - All rights reserved
- * @license BSD 3-Clause
- */
 
 declare(strict_types=1);
 
 namespace BeastBytes\Mermaid\RequirementDiagram;
 
 use BeastBytes\Mermaid\CommentTrait;
-use BeastBytes\Mermaid\Mermaid;
-use BeastBytes\Mermaid\MermaidInterface;
+use BeastBytes\Mermaid\Diagram;
 use BeastBytes\Mermaid\RenderItemsTrait;
-use Stringable;
 
-final class RequirementDiagram implements MermaidInterface, Stringable
+final class RequirementDiagram extends Diagram
 {
     use CommentTrait;
     use RenderItemsTrait;
 
-    private const TYPE = 'requirementDiagram';
+    private const string TYPE = 'requirementDiagram';
 
     /** @var Element[] $elements */
     private array $elements = [];
@@ -27,11 +21,6 @@ final class RequirementDiagram implements MermaidInterface, Stringable
     private array $relationships = [];
     /** @var Requirement[] $s */
     private array $requirements = [];
-
-    public function __toString(): string
-    {
-        return $this->render();
-    }
 
     public function addElement(Element ...$element): self
     {
@@ -75,16 +64,16 @@ final class RequirementDiagram implements MermaidInterface, Stringable
         return $new;
     }
 
-    public function render(array $attributes = []): string
+    protected function renderDiagram(): string
     {
         $output = [];
 
-        $this->renderComment('', $output);
+        $output[] = $this->renderComment('');
         $output[] = self::TYPE;
-        $this->renderItems($this->requirements, '',$output);
-        $this->renderItems($this->elements, '', $output);
-        $this->renderItems($this->relationships, '', $output);
+        $output[] = $this->renderItems($this->requirements, '');
+        $output[] = $this->renderItems($this->elements, '');
+        $output[] = $this->renderItems($this->relationships, '');
 
-        return Mermaid::render($output, $attributes);
+        return implode("\n", array_filter($output, fn($v) => !empty($v)));
     }
 }

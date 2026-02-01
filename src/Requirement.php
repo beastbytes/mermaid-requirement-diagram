@@ -1,8 +1,4 @@
 <?php
-/**
- * @copyright Copyright © 2023 BeastBytes - All rights reserved
- * @license BSD 3-Clause
- */
 
 declare(strict_types=1);
 
@@ -11,9 +7,16 @@ namespace BeastBytes\Mermaid\RequirementDiagram;
 use BeastBytes\Mermaid\CommentTrait;
 use BeastBytes\Mermaid\Mermaid;
 
-final class Requirement
+final class Requirement implements RelatableInterface
 {
     use CommentTrait;
+
+    private const string CLOSE = '}';
+    private const string ID = 'id: "%s"';
+    private const RELATIONSHIP = '%s "%s" {';
+    private const string RISK = 'risk: %s';
+    private const string TEXT = 'text: "%s"';
+    private const string VERIFY_METHOD = 'verifyMethod: %s';
 
     public function __construct(
         private readonly Type $type,
@@ -21,7 +24,7 @@ final class Requirement
         private readonly string $id,
         private readonly string $text,
         private readonly Risk $risk,
-        private readonly VerificationMethod $verificationMethod
+        private readonly VerifyMethod $verifyMethod
     )
     {
     }
@@ -36,14 +39,14 @@ final class Requirement
     {
         $output = [];
 
-        $this->renderComment($indentation, $output);
-        $output[] = $indentation . $this->type->value . ' ' . $this->name . ' {';
-        $output[] = $indentation . Mermaid::INDENTATION . 'id: ' . $this->id;
-        $output[] = $indentation . Mermaid::INDENTATION . 'text: ' . $this->text;
-        $output[] = $indentation . Mermaid::INDENTATION . 'risk: ' . $this->risk->value;
-        $output[] = $indentation . Mermaid::INDENTATION . 'verifyMethod: ' . $this->verificationMethod->value;
-        $output[] = $indentation . '}';
+        $output[] = $this->renderComment($indentation, $output);
+        $output[] = $indentation . sprintf(self::RELATIONSHIP, $this->type->name, $this->name);
+        $output[] = $indentation . Mermaid::INDENTATION . sprintf(self::ID, $this->id);
+        $output[] = $indentation . Mermaid::INDENTATION . sprintf(self::TEXT, $this->text);
+        $output[] = $indentation . Mermaid::INDENTATION . sprintf(self::RISK, $this->risk->name);
+        $output[] = $indentation . Mermaid::INDENTATION . sprintf(self::VERIFY_METHOD, $this->verifyMethod->name);
+        $output[] = $indentation . self::CLOSE;
 
-        return implode("\n", $output);
+        return implode("\n", array_filter($output, fn($v) => !empty($v)));
     }
 }
